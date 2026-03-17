@@ -61,22 +61,51 @@ const TESTIMONIALS = [
 
 /* ── NAVBAR ───────────────────────────────────── */
 function Navbar() {
-  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setMenuOpen(false);
+  };
+
+  const navItems = [['About', 'about'], ['What I Do', 'what'], ['Journey', 'journey'], ['Achievements', 'achievements'], ['Contact', 'contact']];
+
   return (
-    <nav className="navbar">
-      <div className="nav-inner">
-        <div className="nav-brand" onClick={() => scrollTo('hero')}>
-          <div className="nav-badge">M</div>
-          <span className="nav-name">MOHAN <span>CXM</span></span>
+    <>
+      <nav className="navbar">
+        <div className="nav-inner">
+          <div className="nav-brand" onClick={() => scrollTo('hero')}>
+            <div className="nav-badge">M</div>
+            <span className="nav-name">MOHAN <span>CXM</span></span>
+          </div>
+
+          {/* Desktop links */}
+          <div className="nav-links">
+            {navItems.map(([label, id]) => (
+              <button key={id} className="nav-link" onClick={() => scrollTo(id)}>{label}</button>
+            ))}
+            <button className="nav-cta" onClick={() => scrollTo('contact')}>Connect →</button>
+          </div>
+
+          {/* Hamburger */}
+          <button
+            className={`nav-hamburger ${menuOpen ? 'open' : ''}`}
+            onClick={() => setMenuOpen(o => !o)}
+            aria-label="Toggle menu"
+          >
+            <span /><span /><span />
+          </button>
         </div>
-        <div className="nav-links">
-          {[['About', 'about'], ['What I Do', 'what'], ['Journey', 'journey'], ['Achievements', 'achievements'], ['Contact', 'contact']].map(([label, id]) => (
-            <button key={id} className="nav-link" onClick={() => scrollTo(id)}>{label}</button>
-          ))}
-          <button className="nav-cta" onClick={() => scrollTo('contact')}>Connect →</button>
-        </div>
+      </nav>
+
+      {/* Mobile slide-down menu */}
+      <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
+        {navItems.map(([label, id]) => (
+          <button key={id} className="nav-link" onClick={() => scrollTo(id)}>{label}</button>
+        ))}
+        <button className="nav-cta" onClick={() => scrollTo('contact')}>Connect →</button>
       </div>
-    </nav>
+    </>
   );
 }
 
